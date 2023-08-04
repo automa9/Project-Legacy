@@ -108,10 +108,11 @@ namespace Photon.Pun.Demo.PunBasics
 		{
 			cameraOffset.z = -distance;
 			cameraOffset.y = height;
-			
-		    cameraTransform.position = Vector3.Lerp(cameraTransform.position, this.transform.position +this.transform.TransformVector(cameraOffset), smoothSpeed*Time.deltaTime);
-
-		    cameraTransform.LookAt(this.transform.position + centerOffset);
+			Vector3 smoothedPosition = Vector3.Lerp(cameraTransform.position, this.transform.position, smoothSpeed);
+		    
+			//cameraTransform.position = Vector3.Lerp(cameraTransform.position, this.transform.position +this.transform.TransformVector(cameraOffset), smoothSpeed*Time.deltaTime);
+			cameraTransform.position = smoothedPosition;
+		    //cameraTransform.LookAt(this.transform.position + centerOffset);
 		    
 	    }
 
@@ -120,10 +121,12 @@ namespace Photon.Pun.Demo.PunBasics
 		{
 			cameraOffset.z = -distance;
 			cameraOffset.y = height;
-
-			cameraTransform.position = this.transform.position + this.transform.TransformVector(cameraOffset);
-
-			cameraTransform.LookAt(this.transform.position + centerOffset);
+			
+			Vector3 smoothedPosition = Vector3.Lerp(cameraTransform.position, this.transform.position, smoothSpeed);
+		    
+			//cameraTransform.position = Vector3.Lerp(cameraTransform.position, this.transform.position +this.transform.TransformVector(cameraOffset), smoothSpeed*Time.deltaTime);
+			cameraTransform.position = smoothedPosition;
+		    //cameraTransform.LookAt(this.transform.position + centerOffset);
 		}
 		#endregion
 	}

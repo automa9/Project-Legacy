@@ -79,7 +79,7 @@ namespace Photon.Pun.Demo.PunBasics
         /// </summary>
         public void Start()
         {
-            CameraWork _cameraWork = gameObject.GetComponent<CameraWork>();
+            CamWork _cameraWork = gameObject.GetComponent<CamWork>();
 
             if (_cameraWork != null)
             {
