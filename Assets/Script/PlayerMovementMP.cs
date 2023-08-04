@@ -15,6 +15,8 @@ public class PlayerMovementMP : MonoBehaviourPunCallbacks, IPunObservable
     public float dashStoppingSpeed = 0.1f;
     public float dashSpeed = 5f;
     float currentDashTime = maxDashTime;
+    
+    public GameObject bloodSplatterPrefab;
 
     [SerializeField]
     private float _playerSpeed = 5f;
@@ -43,6 +45,8 @@ public class PlayerMovementMP : MonoBehaviourPunCallbacks, IPunObservable
     private float powerUpTimer = 0f;
     public int powerUpCount = 3;
 
+    public Vector3 bloodofset = Vector3.zero;
+
     private void Start()
     {
         view = GetComponent<PhotonView>();
@@ -50,8 +54,6 @@ public class PlayerMovementMP : MonoBehaviourPunCallbacks, IPunObservable
         _controller = GetComponent<CharacterController>();
         _rigidbody = GetComponent<Rigidbody>();
         _basePlayerSpeed = _playerSpeed;
-
-   
     }
     
     void FixedUpdate()
@@ -190,5 +192,28 @@ public class PlayerMovementMP : MonoBehaviourPunCallbacks, IPunObservable
         isPoweredUp = true;
         powerUpTimer = powerUpDuration;
         _playerSpeed = _basePlayerSpeed * 2f;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy")) // Check if the collider belongs to the player
+        {
+             StartCoroutine(DelayBlood());
+
+            // You can also add other actions here, like decreasing enemy health, playing hit sounds, etc.
+
+            // Finally, destroy the enemy hitbox (or disable it) if needed
+            
+        }
+    }
+
+    IEnumerator DelayBlood()
+    {
+        //yield on a new YieldInstruction that waits for 5 seconds.
+        yield return new WaitForSeconds(0.4f);
+        // Instantiate the blood splatter prefab at the hit position and rotation
+        Quaternion randomRotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
+        Instantiate(bloodSplatterPrefab, transform.position + bloodofset, randomRotation);
+
     }
 }

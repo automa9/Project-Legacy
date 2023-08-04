@@ -78,55 +78,45 @@ namespace Photon.Pun.Demo.PunBasics
         /// MonoBehaviour method called on GameObject by Unity during initialization phase.
         /// </summary>
         public void Start()
-        {
+        { 
             CamWork _cameraWork = gameObject.GetComponent<CamWork>();
 
-            if (_cameraWork != null)
-            {
-                if (photonView.IsMine)
+                if (_cameraWork != null)
                 {
-                    _cameraWork.OnStartFollowing();
+                    if (photonView.IsMine)
+                    {
+                        _cameraWork.OnStartFollowing();
+                    }
                 }
-            }
-            else
-            {
-                Debug.LogError("<Color=Red><b>Missing</b></Color> CameraWork Component on player Prefab.", this);
-            }
+                else
+                {
+                    Debug.LogError("<Color=Red><b>Missing</b></Color> CameraWork Component on player Prefab.", this);
+                }
 
-            // Create the UI
-            if (this.playerUiPrefab != null)
-            {
-                GameObject _uiGo = Instantiate(this.playerUiPrefab);
-                _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
-            }
-            else
-            {
-                Debug.LogWarning("<Color=Red><b>Missing</b></Color> PlayerUiPrefab reference on player Prefab.", this);
-            }
+            if (PhotonNetwork.IsConnected) {
+                // Create the UI
+                if (this.playerUiPrefab != null)
+                {
+                    GameObject _uiGo = Instantiate(this.playerUiPrefab);
+                    _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);
+                }
+                else
+                {
+                    Debug.LogWarning("<Color=Red><b>Missing</b></Color> PlayerUiPrefab reference on player Prefab.", this);
+                }
 
-            #if UNITY_5_4_OR_NEWER
-            // Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
-			UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
-            #endif
+                #if UNITY_5_4_OR_NEWER
+                // Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
+                UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+                #endif
+            }
         }
-
-
-		public override void OnDisable()
-		{
-			// Always call the base to remove callbacks
-			base.OnDisable ();
-
-			#if UNITY_5_4_OR_NEWER
-			UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
-			#endif
-		}
 
         private bool leavingRoom;
 
         /// <summary>
         /// MonoBehaviour method called on GameObject by Unity on every frame.
         /// Process Inputs if local player.
-        /// Show and hide the beams
         /// Watch for end of game, when local player health is 0.
         /// </summary>
         public void Update()

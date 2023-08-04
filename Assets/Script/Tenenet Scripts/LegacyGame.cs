@@ -70,7 +70,7 @@ public class LegacyGame : MonoBehaviour
 
     private void Update()
     {
-
+        
         if (view.IsMine)
         {
             // Check if the game has started
