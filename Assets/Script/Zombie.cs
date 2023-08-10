@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Zombie : MonoBehaviour
 {
@@ -6,6 +7,8 @@ public class Zombie : MonoBehaviour
     public float movementSpeed = 2.0f;
     public float detectionDistance = 10.0f;
     public float stoppingDistance = 2.0f;
+    public GameObject bloodSplatterPrefab;
+    public Vector3 bloodofset = Vector3.zero;
     Animator enemy_Animator;
     private Transform playerTransform;
     private Rigidbody rb;
@@ -43,18 +46,43 @@ public class Zombie : MonoBehaviour
                     Vector3 movement = directionToPlayer.normalized * movementSpeed * Time.deltaTime;
                     rb.MovePosition(rb.position + movement);
                 }
+                else if(distanceToPlayer < 3.5)
+                {
+                    Attack();
+                }
                 else
                 {
-                    // Stop the zombie when it's too close to the player
+                     // Stop the zombie when it's too close to the player
                     rb.velocity = Vector3.zero;
                     transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(directionToPlayer), Time.deltaTime * 5.0f);
-                    Attack();
                 }
             }
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bullet")) // Check if the collider belongs to the player
+        {
+             StartCoroutine(DelayBlood());
+
+            //Can also add other actions here, like decreasing enemy health, playing hit sounds, etc.
+            
+        }
+    }
+
+    IEnumerator DelayBlood()
+    {
+        //yield on a new YieldInstruction that waits for 5 seconds.
+        yield return new WaitForSeconds(0.0f);
+        // Instantiate the blood splatter prefab at the hit position and rotation
+        Quaternion randomRotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
+        Instantiate(bloodSplatterPrefab, transform.position + bloodofset, randomRotation);
+    }
+
     private void Attack(){
         enemy_Animator.SetBool("attacking", true);
     }
+
+  
 }

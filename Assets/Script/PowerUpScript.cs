@@ -8,7 +8,7 @@ public class PowerUpScript : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerMovementMP player = other.GetComponent<PlayerMovementMP>();
+            PlayerControl player = other.GetComponent<PlayerControl>();
             if (player != null)
             {
                 player.ActivatePowerUp(); // Trigger the power-up effect on the player

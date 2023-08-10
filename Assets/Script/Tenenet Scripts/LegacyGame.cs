@@ -18,11 +18,21 @@ public class LegacyGame : MonoBehaviour
     private string gold;
     public string sceneMP;
 
+    private bool isPaused = false;
+    public GameObject pauseMenu;
+
+
     private void Start()
     {
         //currentSceneName = SceneManager.GetActiveScene().name;
         view = GetComponent<PhotonView>();
         StartCoroutine(CountdownCoroutine());
+
+        if (pauseMenu.active == true)
+        {
+            pauseMenu.SetActive(false);
+        }
+        
     }
 
     private IEnumerator CountdownCoroutine()
@@ -68,6 +78,22 @@ public class LegacyGame : MonoBehaviour
         return string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
+    public void TogglePause()
+    {
+        isPaused = !isPaused;
+
+        if (isPaused)
+        {
+            Time.timeScale = 0; // Pause the game
+            pauseMenu.SetActive(true); // Show pause menu
+        }
+        else
+        {
+            Time.timeScale = 1; // Unpause the game
+            pauseMenu.SetActive(false); // Hide pause menu
+        }
+    }
+
     private void Update()
     {
         
@@ -91,7 +117,7 @@ public class LegacyGame : MonoBehaviour
     [PunRPC]
     private void managePlayerMP(bool status)
     {
-        FindObjectOfType<PlayerMovementMP>().enabled = status;
+        FindObjectOfType<PlayerControl>().enabled = status;
     }
 }
 
