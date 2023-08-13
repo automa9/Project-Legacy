@@ -20,6 +20,8 @@ public class PlayerTouchMovement : MonoBehaviour
     private Vector2 MovementAmount;
     private Animator playerAnimator;
 
+    public Vector3 velocity;
+
     void Start()
     {
         playerNavMeshAgent = GetComponent<NavMeshAgent>();
@@ -115,11 +117,13 @@ public class PlayerTouchMovement : MonoBehaviour
     {
         Vector3 scaledMovement = playerNavMeshAgent.speed * Time.deltaTime * new Vector3(MovementAmount.y, 0, -MovementAmount.x);
         playerNavMeshAgent.Move(scaledMovement);
-       // playerNavMeshAgent.transform.LookAt(playerNavMeshAgent.transform.position + scaledMovement, Vector3.up);
+        playerNavMeshAgent.transform.LookAt(playerNavMeshAgent.transform.position, Vector3.up);
+        
+        playerAnimator.SetFloat("moveX", MovementAmount.x);
+        playerAnimator.SetFloat("moveZ", MovementAmount.y);
 
-        playerAnimator.SetBool("Running", true);
-        // print("MovementAmount.x: " + MovementAmount.x);
-        // print("MovementAmount.y: " + MovementAmount.y);
-        //playerAnimator.SetBool("moveZ", MovementAmount.y);
+        print("MovementAmount.x: " + MovementAmount.x);
+        print("MovementAmount.y: " + MovementAmount.y);
+        
     }
 }

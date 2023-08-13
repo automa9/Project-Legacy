@@ -24,7 +24,7 @@ namespace SG
                 }
             }
         }
-        public void LoadWeaponSlot(WeaponItem weaponItem, bool isLeft)
+       public void LoadWeaponSlot(WeaponItem weaponItem, bool isLeft)
         {
             if(isLeft)
             {
@@ -35,5 +35,6 @@ namespace SG
                 rightHandSlot.LoadWeaponModel(weaponItem);
             }
         }
+        
     }
 }
