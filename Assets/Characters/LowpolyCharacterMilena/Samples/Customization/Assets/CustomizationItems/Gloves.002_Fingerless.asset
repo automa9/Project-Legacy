@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c1f38163de8ee243aa93b40004a77de, type: 3}
+  m_Name: Gloves.002_Fingerless
+  m_EditorClassIdentifier: 
+  m_Slot: 3
+  m_Meshes:
+  - {fileID: 8498653230796387940, guid: 33ab434b1a77569409c0950fdaa5edf8, type: 3}
+  m_HiddenParts: 0a000000

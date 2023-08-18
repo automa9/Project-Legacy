@@ -17,3 +17,5 @@ MonoBehaviour:
   modelPrefab: {fileID: 7402023325286625168, guid: 87b3af2026b58734ca81f84ffe8a2e04,
     type: 3}
   isUnarmed: 1
+  muzzle: {fileID: 100008, guid: ae12d87e2c868584f91d48cab717fe2b, type: 3}
+  isGun: 1

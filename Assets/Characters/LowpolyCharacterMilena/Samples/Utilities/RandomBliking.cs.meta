@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 28b005df9a0c1ff4d915a8d61f915dff
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 219848
+  packageName: Lowpoly Modular Character - Milena
+  packageVersion: 2.0
+  assetPath: Assets/Rukha93/Characters/LowpolyCharacterMilena/Samples/Utilities/RandomBliking.cs
+  uploadId: 509021

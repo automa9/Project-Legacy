@@ -12,6 +12,7 @@ public class Zombie : MonoBehaviour
     Animator enemy_Animator;
     private Transform playerTransform;
     private Rigidbody rb;
+    private UnityEngine.AI.NavMeshAgent navAgent;
 
     private void Start()
     {
@@ -20,6 +21,7 @@ public class Zombie : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true; // Freeze rotation to ensure proper movement
         rb.useGravity = false;
+        navAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
     }
 
     private void FixedUpdate()
@@ -43,8 +45,9 @@ public class Zombie : MonoBehaviour
                     // animate to walk
                     enemy_Animator.SetBool("attacking", false);
                     // Move the zombie towards the player using physics
-                    Vector3 movement = directionToPlayer.normalized * movementSpeed * Time.deltaTime;
-                    rb.MovePosition(rb.position + movement);
+                    //Vector3 movement = directionToPlayer.normalized * movementSpeed * Time.deltaTime;
+                    //rb.MovePosition(rb.position + movement);
+                    navAgent.SetDestination(playerTransform.position);
                 }
                 else if(distanceToPlayer < 3.5)
                 {

@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c1f38163de8ee243aa93b40004a77de, type: 3}
+  m_Name: LowerBody.004_Shorts
+  m_EditorClassIdentifier: 
+  m_Slot: 4
+  m_Meshes:
+  - {fileID: -356410736302603339, guid: b4a5df24b1031f841945dbcd28ba174c, type: 3}
+  m_HiddenParts: 0c0000000d0000000e000000

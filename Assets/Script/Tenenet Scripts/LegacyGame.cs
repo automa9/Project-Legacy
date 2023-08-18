@@ -67,7 +67,7 @@ public class LegacyGame : MonoBehaviour
         timerText.text = "Game Over";
         isGameStarted = false;
 
-        Debug.Log(gold);
+        //Debug.Log(gold);
         SceneManager.LoadScene(goToScene);
     }
 

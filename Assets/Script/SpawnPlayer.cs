@@ -28,8 +28,8 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
 
             PlayerPrefs.DeleteKey("previousIndex");
 
-            Debug.Log("Number of player: " + playerCount);
-            Debug.Log("Position Selected: " + teamPosition);
+            //Debug.Log("Number of player: " + playerCount);
+            //Debug.Log("Position Selected: " + teamPosition);
 
             for(int i = 0; i< playerPos.Length; i++)
             {

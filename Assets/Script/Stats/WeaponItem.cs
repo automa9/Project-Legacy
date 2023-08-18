@@ -9,5 +9,7 @@ namespace SG
     {
         public GameObject modelPrefab;
         public bool isUnarmed;
+        public GameObject muzzle;
+        public bool isGun;
     }
 }

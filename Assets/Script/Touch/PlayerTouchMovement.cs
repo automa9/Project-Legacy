@@ -122,8 +122,18 @@ public class PlayerTouchMovement : MonoBehaviour
         playerAnimator.SetFloat("moveX", MovementAmount.x);
         playerAnimator.SetFloat("moveZ", MovementAmount.y);
 
-        print("MovementAmount.x: " + MovementAmount.x);
-        print("MovementAmount.y: " + MovementAmount.y);
+        //print("MovementAmount.x: " + MovementAmount.x);
+        //print("MovementAmount.y: " + MovementAmount.y);
+
+        if(MovementAmount.x == 0 &&MovementAmount.y ==0){
+            playerAnimator.SetBool("isMoving",true);
+        }
+
+        if(MovementAmount.x > 0.5){//Move East
+            playerAnimator.SetBool("isMoving",true);
+        }
+        
+
         
     }
 }

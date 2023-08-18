@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f499c2732ba682c49b54943064ae916c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 219848
+  packageName: Lowpoly Modular Character - Milena
+  packageVersion: 2.0
+  assetPath: Assets/Rukha93/Characters/LowpolyCharacterMilena/Samples/Customization/Scripts/CustomizationManager.cs
+  uploadId: 509021

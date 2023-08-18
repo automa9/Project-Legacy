@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
 {
     PhotonView view;
-    private Vector3 moveDirection;
+    Vector2 moveDirection;
 
     public string targetEnemy = "Enemy";
     public float playerHealth = 100;
@@ -21,8 +21,8 @@ public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
     public float projectileSpeed = 10.0f; // Speed of the projectile
 
     public GameObject bloodSplatterPrefab;
-
-    [SerializeField]
+    public GameObject muzzlePrefab;
+    
     
     public GameObject projectilePrefab;
     private Transform enemyTransform;
@@ -51,6 +51,7 @@ public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
     public int powerUpCount = 3;
     public float meleeDistance = 2.0f;
 
+    public Vector3 muzzleOffset= Vector3.zero;
     public Vector3 bloodoffset = Vector3.zero;
     public Vector3 bulletoffset = Vector3.zero;
     private float lastShotTime; // Time of the last shot
@@ -92,7 +93,7 @@ public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
     
     void FixedUpdate()
     {
-        Debug.Log("Player not poses controller");
+       // Debug.Log("Player not poses controller");
         //StartCoroutine(DelayBlood());
         ////MOVE THE PLAYER-----------------
                 //float horizontalInput = Input.GetAxis("Horizontal");
@@ -108,7 +109,7 @@ public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
 
         if ( view == null || view.IsMine)
         {
-            Debug.Log("Player Successfully Poses controller");
+           // Debug.Log("Player Successfully Poses controller");
             if(!isDead){
                 if (_groundedPlayer && _playerVelocity.y < 0)
                 {
@@ -118,7 +119,7 @@ public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
                 if(enemyTransform != null){
                     // Calculate the distance to the player
                     float distanceToEnemy = Vector3.Distance(transform.position, enemyTransform.position);
-                    
+                    animator.SetBool("isShoot",false);
                     //Debug.Log(distanceToEnemy);
                     if (distanceToEnemy <= detectionDistance)
                     {
@@ -148,6 +149,7 @@ public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
                         else
                         {
                             // melee when it's too close to the enemy
+                            animator.SetBool("isShoot",false);
                             _rigidbody.velocity = Vector3.zero;
                             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(directionToPlayer), Time.deltaTime * 5.0f);
                         }
@@ -206,6 +208,7 @@ public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
 
             // Serialize the kicking player
             stream.SendNext(attackingPlayer);
+
         }else{
             // Read data from the stream (e.g., update position, rotation, or custom properties)
 
@@ -228,16 +231,20 @@ public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Shoot()
     {
+        /*
         if (projectilePrefab != null)
         {
             GameObject newProjectile = Instantiate(projectilePrefab, transform.position + bulletoffset, transform.rotation);
+            GameObject newMuzzle = Instantiate(muzzlePrefab, transform.position + muzzleOffset, transform.rotation);
+            Destroy(newMuzzle,.5f);
             Rigidbody projectileRigidbody = newProjectile.GetComponent<Rigidbody>();
-
+            animator.SetBool("isShoot",true);
             if (projectileRigidbody != null)
             {
                 projectileRigidbody.velocity = transform.forward * projectileSpeed;
+                animator.SetTrigger("Shot");
             }
-        }
+        }*/
     }
 
     private float GetPlayerSpeed()

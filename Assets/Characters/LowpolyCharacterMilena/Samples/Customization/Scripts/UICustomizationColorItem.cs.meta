@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 4b6bb55897e2a864b8571b9bac277741
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 219848
+  packageName: Lowpoly Modular Character - Milena
+  packageVersion: 2.0
+  assetPath: Assets/Rukha93/Characters/LowpolyCharacterMilena/Samples/Customization/Scripts/UICustomizationColorItem.cs
+  uploadId: 509021
