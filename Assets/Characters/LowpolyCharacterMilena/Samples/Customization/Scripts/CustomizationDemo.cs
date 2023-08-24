@@ -15,20 +15,6 @@ namespace Rukha93.Demos.LowpolyCustomization
         [SerializeField] private UICustomizationItem m_UIItemPrefab;
         [SerializeField] private UICustomizationColorItem m_ColorItemPrefab;
 
-        [Space]
-        [SerializeField] private Camera m_Camera;
-        [SerializeField] private Transform m_CameraTarget_A;
-        [SerializeField] private Transform m_CameraTarget_B;
-        [SerializeField] private Transform m_RotateTarget;
-        [SerializeField] private float m_RotateSpeed = 1;
-
-        private float m_CameraLerp;
-        private float m_CameraLerpTarget;
-
-        private bool m_CanRotate;
-        private Vector2 m_LastMousePosition;
-        private float m_RotationRemaining;
-
         private Dictionary<CustomizationSlot, List<CustomizationAsset>> m_CustomizationOptions;
         private Dictionary<CustomizationSlot, UICustomizationItem> m_UIItemMap;
         private List<UICustomizationColorItem> m_ColorItemMap;
@@ -86,19 +72,6 @@ namespace Rukha93.Demos.LowpolyCustomization
             }
             m_ColorItemPrefab.gameObject.SetActive(false);
             EquipColor(1);
-        }
-
-        private void Update()
-        {
-
-
-            m_Camera.transform.position = Vector3.Lerp(m_CameraTarget_A.position, m_CameraTarget_B.position, m_CameraLerp);
-            m_Camera.transform.rotation = Quaternion.Lerp(m_CameraTarget_A.rotation, m_CameraTarget_B.rotation, m_CameraLerp);
-            m_Camera.fieldOfView = Mathf.Lerp(30, 10, m_CameraLerp);
-
-            m_CameraLerp = Mathf.Lerp(m_CameraLerp, m_CameraLerpTarget, Time.deltaTime * 8);
-
-            
         }
 
         private void EquipItem(CustomizationSlot slot, int index)

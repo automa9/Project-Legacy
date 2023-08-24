@@ -19,3 +19,5 @@ MonoBehaviour:
   isUnarmed: 1
   muzzle: {fileID: 100008, guid: ae12d87e2c868584f91d48cab717fe2b, type: 3}
   isGun: 1
+  OH_Light_Attack_1: HandUp
+  OH_Heavy_Attack_1: HandLeft

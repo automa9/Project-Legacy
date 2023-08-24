@@ -117,7 +117,7 @@ public class LegacyGame : MonoBehaviour
     [PunRPC]
     private void managePlayerMP(bool status)
     {
-        FindObjectOfType<PlayerControl>().enabled = status;
+        FindObjectOfType<SG.PlayerControl>().enabled = status;
     }
 }
 

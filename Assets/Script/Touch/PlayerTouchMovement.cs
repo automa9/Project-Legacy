@@ -22,8 +22,11 @@ public class PlayerTouchMovement : MonoBehaviour
 
     public Vector3 velocity;
 
+    public Transform playerTransform;
+
     void Start()
     {
+        //Joystick.gameObject.SetActive(false);
         playerNavMeshAgent = GetComponent<NavMeshAgent>();
         playerAnimator = GetComponent<Animator>();
     }
@@ -49,7 +52,7 @@ public class PlayerTouchMovement : MonoBehaviour
 
     private void HandleFingerMove(Finger MovedFinger)
     {
-        if(MovedFinger == MovementFinger)
+        if(MovedFinger == MovementFinger && Joystick != null)
         {
             Vector2 knobPosition;
             float maxMovement = JoystickSize.x / 2f;
@@ -79,19 +82,24 @@ public class PlayerTouchMovement : MonoBehaviour
             Joystick.knob.anchoredPosition = Vector2.zero;
             Joystick.gameObject.SetActive(false);
             MovementAmount = Vector2.zero; 
+            MovementAmount.x = 0;
+            MovementAmount.y= 0;
+            ResetAnim();
             //PlayerAnimator
         }
     }
 
     private void HandelFingerDown(Finger TouchedFinger)
     {
-        if(MovementFinger == null && TouchedFinger.screenPosition.y <= Screen.height /2f)
-        {
-            MovementFinger = TouchedFinger;
-            MovementAmount = Vector2.zero;
-            Joystick.gameObject.SetActive(true);
-            Joystick.RectTransform.sizeDelta = JoystickSize;
-            Joystick.RectTransform.anchoredPosition = ClampStartPosition(TouchedFinger.screenPosition);
+        if(Joystick != null){
+            if(MovementFinger == null && TouchedFinger.screenPosition.y <= Screen.height /2f)
+            {
+                MovementFinger = TouchedFinger;
+                MovementAmount = Vector2.zero;
+                Joystick.gameObject.SetActive(true);
+                Joystick.RectTransform.sizeDelta = JoystickSize;
+                Joystick.RectTransform.anchoredPosition = ClampStartPosition(TouchedFinger.screenPosition);
+            }
         }
     }
 
@@ -113,27 +121,102 @@ public class PlayerTouchMovement : MonoBehaviour
         return StartPosition;
     }
 
+    public void ResetAnim(){
+        playerAnimator.SetBool("SideLeft",false);
+        playerAnimator.SetBool("Backward",false);
+        playerAnimator.SetBool("SideRight",false);
+        playerAnimator.SetBool("Front",false);
+    }
+
     private void FixedUpdate()
     {
+       // GetPlayerFacingDirection();
+
         Vector3 scaledMovement = playerNavMeshAgent.speed * Time.deltaTime * new Vector3(MovementAmount.y, 0, -MovementAmount.x);
+
         playerNavMeshAgent.Move(scaledMovement);
-        playerNavMeshAgent.transform.LookAt(playerNavMeshAgent.transform.position, Vector3.up);
-        
-        playerAnimator.SetFloat("moveX", MovementAmount.x);
-        playerAnimator.SetFloat("moveZ", MovementAmount.y);
 
-        //print("MovementAmount.x: " + MovementAmount.x);
-        //print("MovementAmount.y: " + MovementAmount.y);
+        //playerNavMeshAgent.transform.LookAt(playerNavMeshAgent.transform.position + scaledMovement, Vector3.up);
 
-        if(MovementAmount.x == 0 &&MovementAmount.y ==0){
+        // print();
+        // print("MovementAmount.x: " + MovementAmount.x + "MovementAmount.y: " + MovementAmount.y );
+
+    
+
+//==================================================================
+        if(MovementAmount.x !=0 && MovementAmount.y !=0){
             playerAnimator.SetBool("isMoving",true);
+        }else{
+            playerAnimator.SetBool("isMoving",false);
+            playerAnimator.SetBool("SideLeft",false);
+            playerAnimator.SetBool("Backward",false);
+            playerAnimator.SetBool("SideRight",false);
+            playerAnimator.SetBool("Front",false);
+        }
+        
+        
+
+         Vector3 playerToThis = transform.position - playerTransform.position;
+        playerToThis.y = 0; // Consider only the horizontal plane
+
+        // Normalize the vector to get the facing direction
+        Vector3 normalizedDir = playerToThis.normalized;
+
+        // Calculate the angle between the normalized direction and North (positive Z axis)
+        float angle = Vector3.SignedAngle(Vector3.forward, normalizedDir, Vector3.up);
+
+        // Convert angle to positive value
+        if (angle < 0)
+            angle += 360;
+
+        //Debug.Log(angle);
+        // Determine the facing direction based on the angle
+        if (angle >= 22.5f && angle < 67.5f){
+            Debug.Log("NorthEast");
+            playerAnimator.SetFloat("moveX", MovementAmount.x);
+            playerAnimator.SetFloat("moveZ", -MovementAmount.y);
+        }
+           
+        else if (angle >= 67.5f && angle < 112.5f){//facing East
+            Debug.Log("East");
+
+            playerAnimator.SetFloat("moveX", MovementAmount.y);
+            playerAnimator.SetFloat("moveZ", -MovementAmount.x);
+        }
+            
+        else if (angle >= 112.5f && angle < 157.5f){
+            Debug.Log("SouthEast");
+            playerAnimator.SetFloat("moveX", MovementAmount.y);
+            playerAnimator.SetFloat("moveZ", -MovementAmount.x);
+        }
+            
+        else if (angle >= 157.5f && angle < 202.5f){
+           Debug.Log("South");
+            playerAnimator.SetFloat("moveX", -MovementAmount.x);
+            playerAnimator.SetFloat("moveZ", MovementAmount.y);
+        }
+            
+        else if (angle >= 202.5f && angle < 247.5f){
+            Debug.Log("SouthWest");
+            playerAnimator.SetFloat("moveX", -MovementAmount.x);
+            playerAnimator.SetFloat("moveZ", MovementAmount.y);
+        }
+            
+        else if (angle >= 247.5f && angle < 292.5f){
+            Debug.Log("West");
+            playerAnimator.SetFloat("moveX", -MovementAmount.y);
+            playerAnimator.SetFloat("moveZ", MovementAmount.x);
+        }
+            
+        else if (angle >= 292.5f && angle < 337.5f){
+            Debug.Log("NorthWest");
+            playerAnimator.SetFloat("moveX", MovementAmount.x);
+            playerAnimator.SetFloat("moveZ", -MovementAmount.y);
+        }else{
+            Debug.Log("North");
+            playerAnimator.SetFloat("moveX", MovementAmount.x);
+            playerAnimator.SetFloat("moveZ", -MovementAmount.y);
         }
 
-        if(MovementAmount.x > 0.5){//Move East
-            playerAnimator.SetBool("isMoving",true);
-        }
-        
-
-        
     }
 }

@@ -4,6 +4,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 
+namespace SG{
 public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
 {
     PhotonView view;
@@ -43,6 +44,9 @@ public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
     private Photon.Realtime.Player attackingPlayer;
 
     Rigidbody _rigidbody;
+    PlayerAttacker playerAttacker;
+    PlayerInventory playerInventory;
+    Gun gun;
 
     public bool isPoweredUp = false;
     private float powerUpDuration = 10f;
@@ -56,6 +60,12 @@ public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
     public Vector3 bulletoffset = Vector3.zero;
     private float lastShotTime; // Time of the last shot
 
+    private void Awake(){
+        playerAttacker = GetComponent<PlayerAttacker>();
+        playerInventory = GetComponent<PlayerInventory>();
+        gun = playerInventory.leftWeapon.modelPrefab.GetComponent<Gun>();
+    }
+
     void OnDrawGizmosSelected(){
         Gizmos.color= Color.red;
         Gizmos.DrawWireSphere(transform.position,meleeDistance);
@@ -67,6 +77,7 @@ public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
         animator = GetComponent<Animator>();
        // _controller = GetComponent<CharacterController>();
         _rigidbody = GetComponent<Rigidbody>();
+        
         _rigidbody.freezeRotation = true; // Freeze rotation to ensure proper movement
         _rigidbody.useGravity = false;
 
@@ -93,6 +104,10 @@ public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
     
     void FixedUpdate()
     {
+        //REFERENCES THE RIGHT WEAPON TO HANDLE LIGHT ATTACK
+        
+
+
        // Debug.Log("Player not poses controller");
         //StartCoroutine(DelayBlood());
         ////MOVE THE PLAYER-----------------
@@ -139,6 +154,7 @@ public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
                             // Check if enough time has passed since the last shot
                             if (Time.time - lastShotTime >= shootingInterval && !isDead)
                             {
+                               
                                 Shoot();
                                 lastShotTime = Time.time;
                             }
@@ -231,20 +247,27 @@ public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
 
     private void Shoot()
     {
-        /*
+        
         if (projectilePrefab != null)
         {
             GameObject newProjectile = Instantiate(projectilePrefab, transform.position + bulletoffset, transform.rotation);
-            GameObject newMuzzle = Instantiate(muzzlePrefab, transform.position + muzzleOffset, transform.rotation);
+            GameObject newMuzzle = Instantiate(muzzlePrefab, transform.position + muzzleOffset, Quaternion.Euler(0, 0, -90));
             Destroy(newMuzzle,.5f);
             Rigidbody projectileRigidbody = newProjectile.GetComponent<Rigidbody>();
             animator.SetBool("isShoot",true);
+
+            StartCoroutine(MuzzleFlash());
+
+            
+            playerAttacker.HandleLightAttack(playerInventory.rightWeapon);
+            playerAttacker.HandleHeavyAttack(playerInventory.rightWeapon);
+            
             if (projectileRigidbody != null)
             {
                 projectileRigidbody.velocity = transform.forward * projectileSpeed;
                 animator.SetTrigger("Shot");
             }
-        }*/
+        }
     }
 
     private float GetPlayerSpeed()
@@ -292,4 +315,12 @@ public class PlayerControl : MonoBehaviourPunCallbacks, IPunObservable
         Quaternion randomRotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
         Instantiate(bloodSplatterPrefab, transform.position + bloodoffset, randomRotation);
     }
+
+    IEnumerator MuzzleFlash()
+    {
+        gun.muzzle.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        gun.muzzle.SetActive(false);
+    }
+}
 }

@@ -7,6 +7,7 @@ namespace SG
     public class PlayerInventory : MonoBehaviour
     {
         WeaponSlotManager weaponSlotManager;
+
         public WeaponItem rightWeapon;
         public WeaponItem leftWeapon;
 

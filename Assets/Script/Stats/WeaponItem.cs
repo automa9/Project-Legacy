@@ -9,7 +9,18 @@ namespace SG
     {
         public GameObject modelPrefab;
         public bool isUnarmed;
-        public GameObject muzzle;
-        public bool isGun;
+
+        [Header("Attack Animations")]
+
+        public string OH_Light_Attack_1;
+
+        [Header("Idle Animations")]
+        public string Idle;
+
+        [Header("Weapon Type")]
+        public bool isShotgun;
+        public bool isRifle;
+        public bool isPistol;
+        public bool isMeleeWeapon;
     }
 }
