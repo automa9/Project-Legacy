@@ -4,8 +4,8 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-namespace SG{
-
+namespace DA
+{
     public class CameraHandler : MonoBehaviour
     {
         PhotonView view;

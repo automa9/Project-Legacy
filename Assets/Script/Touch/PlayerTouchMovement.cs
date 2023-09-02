@@ -84,8 +84,9 @@ public class PlayerTouchMovement : MonoBehaviour
             MovementAmount = Vector2.zero; 
             MovementAmount.x = 0;
             MovementAmount.y= 0;
+           
+            //PlayerAnimator 
             ResetAnim();
-            //PlayerAnimator
         }
     }
 
@@ -105,12 +106,13 @@ public class PlayerTouchMovement : MonoBehaviour
 
     private Vector2 ClampStartPosition(Vector2 StartPosition)
     {
+        
         if(StartPosition.x < JoystickSize.x/2 )
         {
             StartPosition.x = JoystickSize.x/2 ;
         }
 
-        if(StartPosition.y < JoystickSize.y / 2)
+        if(StartPosition.y < JoystickSize.y /2)
         {
             StartPosition.y = JoystickSize.y /2;
         }
@@ -140,9 +142,7 @@ public class PlayerTouchMovement : MonoBehaviour
 
         // print();
         // print("MovementAmount.x: " + MovementAmount.x + "MovementAmount.y: " + MovementAmount.y );
-
-    
-
+        
 //==================================================================
         if(MovementAmount.x !=0 && MovementAmount.y !=0){
             playerAnimator.SetBool("isMoving",true);
@@ -153,10 +153,8 @@ public class PlayerTouchMovement : MonoBehaviour
             playerAnimator.SetBool("SideRight",false);
             playerAnimator.SetBool("Front",false);
         }
-        
-        
 
-         Vector3 playerToThis = transform.position - playerTransform.position;
+        Vector3 playerToThis = transform.position - playerTransform.position;
         playerToThis.y = 0; // Consider only the horizontal plane
 
         // Normalize the vector to get the facing direction

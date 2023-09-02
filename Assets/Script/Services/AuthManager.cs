@@ -1,56 +1,66 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Unity.Services.Core;
 using Unity.Services.Authentication;
 using System.Threading.Tasks;
 using UnityEngine.UI;
-using GooglePlayGames;
-using GooglePlayGames.BasicApi;
-using UnityEngine.SocialPlatforms;
+using Facebook.Unity;
 
 public class AuthManager : MonoBehaviour
 {
-    private PlayGamesClientConfiguration clientConfig;
     public Text logTxt;
     public Text descriptionTxt;
 
-    private string token;
+    private string accessToken;
 
-    async void Start(){
+    async void Start()
+    {
         await UnityServices.InitializeAsync();
-        Configure();
     }
 
-    internal void Configure(){
-        clientConfig = new PlayGamesClientConfiguration.Builder().Build();
+    void Awake ()
+{
+    if (!FB.IsInitialized) {
+        // Initialize the Facebook SDK
+        FB.Init(InitCallback, OnHideUnity);
+    } else {
+        // Already initialized, signal an app activation App Event
+        FB.ActivateApp();
+    }
+}
+
+
+    private void InitCallback ()
+    {
+        if (FB.IsInitialized) {
+            // Signal an app activation App Event
+            FB.ActivateApp();
+            // Continue with Facebook SDK
+            // ...
+        } else {
+            Debug.Log("Failed to Initialize the Facebook SDK");
+        }
     }
 
-    internal void SignIntoAuthManager(SignInInteractivity interactivity, PlayGamesClientConfiguration config){
-        configuration = clientConfiguration;
-        PlayGamesPlatform.InitalizeInstance(configuration);
-        PlayGamesPlatform.Activate();
-
-        PlayGamesPlatform.Instance.Authentication(interactivity,(code)=>
-        {
-            statusTxt.text = "Authenticating...";
-            if(code == SignInStatus.Success)
-            {
-                statusTxt.text = " Successfully Authenticated ";
-                descriptionTxt= "Hello" + Social.localUser.username + "You have an ID of " +Social.localUser.id;
-            }else
-            {
-                status.text ="failed to Authenticate";
-                descriptionTxt.text = "reason authentication failed: " + code;
-            }
-        });
+    private void OnHideUnity (bool isGameShown)
+    {
+        if (!isGameShown) {
+            // Pause the game - we will need to hide
+            Time.timeScale = 0;
+        } else {
+            // Resume the game - we're getting focus again
+            Time.timeScale = 1;
+        }
     }
-    
 
-    //SIGN IN FUNCTION  
+    //SIGN CALL ANONYMOUSLY
     public async void SignIn()
     {
         await signAnonymous();
+    }
+
+    public async void SignInFB()
+    {
+        await LinkWithFacebookAsync(accessToken);
     }
 
     //SIGN IN ANONYMOUSLY 
@@ -71,19 +81,52 @@ public class AuthManager : MonoBehaviour
         }
     }
 
-    async Task signInWithGoogle(string token){
+
+
+//FACEBOOK SIGNIN
+    async Task SignInWithFacebook(string accessToken)
+    {
         try
         {
-            await AuthenticationService.Instance.SignInWithGoogle(token);
-            print("Sign in with google sucess");
+            await AuthenticationService.Instance.SignInWithFacebookAsync(accessToken);
+            Debug.Log("SignIn is successful.");
         }
         catch (AuthenticationException ex)
         {
-            print("Sign failed");
+            // Compare error code to AuthenticationErrorCodes
+            // Notify the player with the proper error message
             Debug.LogException(ex);
         }
-        catch (RequestFailedException ex){
-            print("Sign if failed");
+        catch (RequestFailedException ex)
+        {
+            // Compare error code to CommonErrorCodes
+            // Notify the player with the proper error message
+            Debug.LogException(ex);
+        }
+    }
+
+    public async Task LinkWithFacebookAsync(string accessToken)
+    {
+        try
+        {
+            await AuthenticationService.Instance.LinkWithFacebookAsync(accessToken);
+            Debug.Log("Link is successful.");
+        }
+        catch (AuthenticationException ex) when (ex.ErrorCode == AuthenticationErrorCodes.AccountAlreadyLinked)
+        {
+            // Prompt the player with an error message.
+            Debug.LogError("This user is already linked with another account. Log in instead.");
+        }
+        catch (AuthenticationException ex)
+        {
+            // Compare error code to AuthenticationErrorCodes
+            // Notify the player with the proper error message
+            Debug.LogException(ex);
+        }
+        catch (RequestFailedException ex)
+        {
+            // Compare error code to CommonErrorCodes
+            // Notify the player with the proper error message
             Debug.LogException(ex);
         }
     }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SG{
+namespace DA{
     public class AnimationHandler : MonoBehaviour
     {
         private Animator anim;
@@ -31,6 +31,11 @@ namespace SG{
         public void OnAnimatorMove()
         {
 
+        }
+
+        public void PlayerDeathAnimation()
+        {
+            
         }
     }
 }
