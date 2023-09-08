@@ -17,7 +17,7 @@ MonoBehaviour:
   modelPrefab: {fileID: 7402023325286625168, guid: 87b3af2026b58734ca81f84ffe8a2e04,
     type: 3}
   isUnarmed: 0
-  attackAnim: HandUp
+  attackAnim: Fire
   Idle: 
   isShotgun: 1
   isRifle: 0
@@ -28,3 +28,6 @@ MonoBehaviour:
   weaponFx: {fileID: 6260644935403212475, guid: d83119c4e9683954b933559aa6eb30d7,
     type: 3}
   weaponAnimation: 
+  clip: {fileID: 8300000, guid: 99846a5a6cb69d2479517f26ef138727, type: 3}
+  audioSource: {fileID: 0}
+  megazine: 10

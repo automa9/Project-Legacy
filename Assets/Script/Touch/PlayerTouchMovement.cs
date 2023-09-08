@@ -111,14 +111,13 @@ public class PlayerTouchMovement : MonoBehaviour
         {
             StartPosition.x = JoystickSize.x/2 ;
         }
-
-        if(StartPosition.y < JoystickSize.y /2)
+        else if(StartPosition.y < JoystickSize.y /2)
         {
-            StartPosition.y = JoystickSize.y /2;
+            StartPosition.y = JoystickSize.y;
         }
         else if (StartPosition.y > Screen.height - JoystickSize.y / 2)
         {
-            StartPosition.y = Screen.height - JoystickSize.y / 2;
+            StartPosition.y = Screen.height - JoystickSize.y;
         }
         return StartPosition;
     }
@@ -170,48 +169,48 @@ public class PlayerTouchMovement : MonoBehaviour
         //Debug.Log(angle);
         // Determine the facing direction based on the angle
         if (angle >= 22.5f && angle < 67.5f){
-            Debug.Log("NorthEast");
+           // Debug.Log("NorthEast");
             playerAnimator.SetFloat("moveX", MovementAmount.x);
             playerAnimator.SetFloat("moveZ", -MovementAmount.y);
         }
            
         else if (angle >= 67.5f && angle < 112.5f){//facing East
-            Debug.Log("East");
+           // Debug.Log("East");
 
             playerAnimator.SetFloat("moveX", MovementAmount.y);
             playerAnimator.SetFloat("moveZ", -MovementAmount.x);
         }
             
         else if (angle >= 112.5f && angle < 157.5f){
-            Debug.Log("SouthEast");
+            //Debug.Log("SouthEast");
             playerAnimator.SetFloat("moveX", MovementAmount.y);
             playerAnimator.SetFloat("moveZ", -MovementAmount.x);
         }
             
         else if (angle >= 157.5f && angle < 202.5f){
-           Debug.Log("South");
+          // Debug.Log("South");
             playerAnimator.SetFloat("moveX", -MovementAmount.x);
             playerAnimator.SetFloat("moveZ", MovementAmount.y);
         }
             
         else if (angle >= 202.5f && angle < 247.5f){
-            Debug.Log("SouthWest");
+          //  Debug.Log("SouthWest");
             playerAnimator.SetFloat("moveX", -MovementAmount.x);
             playerAnimator.SetFloat("moveZ", MovementAmount.y);
         }
             
         else if (angle >= 247.5f && angle < 292.5f){
-            Debug.Log("West");
+           // Debug.Log("West");
             playerAnimator.SetFloat("moveX", -MovementAmount.y);
             playerAnimator.SetFloat("moveZ", MovementAmount.x);
         }
             
         else if (angle >= 292.5f && angle < 337.5f){
-            Debug.Log("NorthWest");
+          //  Debug.Log("NorthWest");
             playerAnimator.SetFloat("moveX", MovementAmount.x);
             playerAnimator.SetFloat("moveZ", -MovementAmount.y);
         }else{
-            Debug.Log("North");
+         //   Debug.Log("North");
             playerAnimator.SetFloat("moveX", MovementAmount.x);
             playerAnimator.SetFloat("moveZ", -MovementAmount.y);
         }

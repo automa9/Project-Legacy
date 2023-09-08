@@ -77,7 +77,7 @@ public class EnemyShooter : MonoBehaviour
 
             if (projectileRigidbody != null)
             {
-                projectileRigidbody.velocity = transform.forward * projectileSpeed;
+                projectileRigidbody.velocity = transform.forward;
             }
         }
     }

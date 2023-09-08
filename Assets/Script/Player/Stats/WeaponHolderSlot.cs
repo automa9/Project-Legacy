@@ -10,6 +10,8 @@ namespace DA
         public bool isLeftHandSlot;
         public bool isRightHandSlot;
 
+        public int megazineSize;
+
         public GameObject currentWeaponModel;
 
         public void UnloadWeapon(){
@@ -25,12 +27,18 @@ namespace DA
                 Destroy(currentWeaponModel);
             }
         }
+        
+        //LOAD DATA
+        public void LoadData(WeaponItem weaponItem)
+        {
+            Debug.Log(weaponItem.firearm.megazine);
+        }
 
         public void LoadWeaponModel(WeaponItem weaponItem)
         {
             //UNLOAD THE WEAPON AND DESTROY IT
             UnloadWeaponAndDestroy();
-
+           
             if(weaponItem == null)
             {
                 //UNLOAD THE WEAPON

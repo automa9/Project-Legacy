@@ -9,8 +9,16 @@ namespace DA
         public int healthLevel = 10;
         public int maxHealth;
         public int currentHealth;
+        public int coinCount =0;
 
         public Healthbar healthbar;
+
+        [Header("Armour Absorptions")]
+        public float phycisalDamageAbsorptionHead;
+        public float phycisalDamageAbsorptionArms;
+        public float phycisalDamageAbsorptionTorso;
+        public float phycisalDamageAbsorptionLegs;
+
 
         void Start()
         {

@@ -21,6 +21,7 @@ namespace DA
         float currentDashTime = maxDashTime;
         public float detectionDistance = 10.0f;
         public float projectileSpeed = 10.0f; // Speed of the projectile
+        public float megazineSize;
 
         public GameObject bloodSplatterPrefab;
         public GameObject muzzlePrefab;
@@ -47,6 +48,9 @@ namespace DA
         PlayerAttacker playerAttacker;
         PlayerInventory playerInventory;
         AnimationHandler animationHandler;
+        WeaponItem weaponItem;
+        //Firearm firearm;
+        Item item;
 
         public bool isPoweredUp = false;
         private float powerUpDuration = 10f;
@@ -60,9 +64,17 @@ namespace DA
         public Vector3 bulletoffset = Vector3.zero;
         private float lastShotTime; // Time of the last shot
 
+        public GameObject shellPrefab; // Prefab of the shotgun shell.
+        public Transform ejectorPoint; // Point where shells will be ejected from.
+
+        public float ejectForce = 10f; // Ejection force for the shells.
+        public float spreadAngle = 10f; // Spread angle for the shotgun pellets.
+         public int numPellets = 8; // Number of pellets per shotgun shot.
+
         private void Awake(){
             playerAttacker = GetComponent<PlayerAttacker>();
             playerInventory = GetComponent<PlayerInventory>();
+            //megazineSize = playerInventory.megazineSize;
         }
 
         void OnDrawGizmosSelected(){
@@ -74,7 +86,7 @@ namespace DA
         {
             //view = GetComponent<PhotonView>();
             animator = GetComponent<Animator>();
-        // _controller = GetComponent<CharacterController>();
+            // _controller = GetComponent<CharacterController>();
             _rigidbody = GetComponent<Rigidbody>();
             
             _rigidbody.freezeRotation = true; // Freeze rotation to ensure proper movement
@@ -136,6 +148,7 @@ namespace DA
                                 {
                                 
                                     Shoot();
+                                    
                                     lastShotTime = Time.time;
                                 }
                                 
@@ -199,27 +212,43 @@ namespace DA
 
         private void Shoot()
         {
+
+            for (int i = 0; i < numPellets; i++)
+        {
+            // Calculate random rotation within the spread angle.
+            Quaternion pelletRotation = Quaternion.Euler(Random.Range(-spreadAngle, spreadAngle), Random.Range(-spreadAngle, spreadAngle), 0f);
+
+            // Instantiate a shotgun shell at the ejector point with the calculated rotation.
+            GameObject shell = Instantiate(shellPrefab, ejectorPoint.position, ejectorPoint.rotation * pelletRotation);
+
+            // Get the Rigidbody of the shell and apply ejection force.
+            Rigidbody shellRigidbody = shell.GetComponent<Rigidbody>();
+            if (shellRigidbody != null)
+            {
+                shellRigidbody.AddForce(shell.transform.forward * ejectForce, ForceMode.Impulse);
+            }
+
+            // Destroy the shell after a certain time (e.g., to clean up).
+            Destroy(shell, 5f);
+        }
+
             if (projectilePrefab != null)
             {
-                //Vector3 directionToPlayer = enemyTransform.position - transform.position;
+                    //Vector3 directionToPlayer = enemyTransform.position - transform.position;
+                    //GameObject newProjectile = Instantiate(projectilePrefab, transform.position + bulletoffset, transform.rotation);
 
-                GameObject newProjectile = Instantiate(projectilePrefab, transform.position + bulletoffset, transform.rotation);
-               // GameObject newMuzzle = Instantiate(muzzlePrefab, transform.position + muzzleOffset, Quaternion.Euler(0, 0, -90));
-                //newMuzzle.transform.rotation = Quaternion.LookRotation(directionToPlayer);
+                   // Rigidbody projectileRigidbody = newProjectile.GetComponent<Rigidbody>();
+                    //Debug.Log(playerInventory.rightWeapon.weaponItem.firearm.megazine);
+                               
+                    animator.SetBool("isShoot",true); 
+                    playerAttacker.HandleLightAttack(playerInventory.rightWeapon);
+                    /*
+                    if (projectileRigidbody != null)
+                    {
+                        //projectileRigidbody.velocity = transform.forward * projectileSpeed;
+                        animator.SetTrigger("Shot");
+                    }*/
                 
-                //Destroy(newMuzzle,.5f);
-                Destroy(newProjectile,1.5f);
-                Rigidbody projectileRigidbody = newProjectile.GetComponent<Rigidbody>();
-                
-                animator.SetBool("isShoot",true);
-                
-                playerAttacker.HandleLightAttack(playerInventory.rightWeapon);
-                
-                if (projectileRigidbody != null)
-                {
-                    projectileRigidbody.velocity = transform.forward * projectileSpeed;
-                    animator.SetTrigger("Shot");
-                }
             }
         }
 

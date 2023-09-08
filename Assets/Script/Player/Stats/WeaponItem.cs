@@ -10,6 +10,8 @@ namespace DA
         public GameObject modelPrefab;
         public bool isUnarmed;
 
+        public Firearm firearm;
+
         [Header("Attack Animations")]
 
         public string attackAnim;

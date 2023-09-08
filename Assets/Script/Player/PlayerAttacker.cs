@@ -25,15 +25,9 @@ namespace DA
         public void HandleLightAttack(WeaponItem weapon)
         {
             animationHandler.PlayTargetAnimation(weapon.attackAnim, true);
-            //Debug.Log(weapon.OH_Light_Attack_1);
+            //Debug.Log(weapon.itemName);
         }
-
-        public void HandleGun(Firearm firearm)
-        {
-            animationHandler.PlayTargetAnimation(firearm.attackAnim, true);
-            //Debug.Log(weapon.OH_Light_Attack_1);
-        }
-
+        
         public void HandleRightHandAttackAction(){
             if(playerInventory.rightWeapon.isMeleeWeapon)
             {
